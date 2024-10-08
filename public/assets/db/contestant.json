@@ -1,0 +1,130 @@
+[
+    {
+        "competition": "kbgb",
+        "table": 1,
+        "uni_name": "Politeknik Negeri Malang",
+        "team_name": "Putra Nusa II",
+        "building_name": "Pinarak Apartment",
+        "uni_logo": "assets/img/kbgb/Politeknik Negeri Malang.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 2,
+        "uni_name": "Universitas Negeri Yogyakarta",
+        "team_name": "Astadewa",
+        "building_name": "Nusantara Tower",
+        "uni_logo": "assets/img/kbgb/Universitas Negeri Yogyakarta.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 3,
+        "uni_name": "Institut Teknologi Nasional Malang",
+        "team_name": "Greesa Nawasena",
+        "building_name": "Bargawa Apartment",
+        "uni_logo": "assets/img/kbgb/Institut Teknologi Nasional Malang.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 4,
+        "uni_name": "Universitas Hasanuddin",
+        "team_name": "Tim Eleanor",
+        "building_name": "Eleanor Elms",
+        "uni_logo": "assets/img/kbgb/Universitas Hasanuddin.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 5,
+        "uni_name": "Universitas Bandar Lampung",
+        "team_name": "Fortune",
+        "building_name": "Siger High Sky",
+        "uni_logo": "assets/img/kbgb/Universitas Bandar Lampung.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 6,
+        "uni_name": "Institut Teknologi Sepuluh November",
+        "team_name": "Mahitala Team",
+        "building_name": "Daraka Tower",
+        "uni_logo": "assets/img/kbgb/Institut Teknologi Sepuluh November.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 7,
+        "uni_name": "Politeknik Negeri Jakarta",
+        "team_name": "Serenity",
+        "building_name": "Dameria Tower",
+        "uni_logo": "assets/img/kbgb/Politeknik Negeri Jakarta.png"
+    },
+    {
+        "competition": "kbgb",
+        "table": 8,
+        "uni_name": "Universitas Warmadewa",
+        "team_name": "Wct-Orbit",
+        "building_name": "Apartement “Lamtoro Heights”",
+        "uni_logo": "assets/img/kbgb/Universitas Warmadewa.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 1,
+        "uni_name": "Universitas Gadjah Mada",
+        "team_name": "Vidyaarta Airawata",
+        "building_name": "Menara Ekagatra",
+        "uni_logo": "assets/img/kbgbp/Universitas Gadjah Mada.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 2,
+        "uni_name": "Politeknik Negeri Bandung",
+        "team_name": "Topnotch",
+        "building_name": "Calathea Apartement",
+        "uni_logo": "assets/img/kbgbp/Politeknik Negeri Bandung.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 3,
+        "uni_name": "Universitas Muhammadiyah Malang",
+        "team_name": "Ar-Ridho",
+        "building_name": "Nusatech Stiratva",
+        "uni_logo": "assets/img/kbgbp/Universitas Muhammadiyah Malang.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 4,
+        "uni_name": "Institut Teknologi Sepuluh November",
+        "team_name": "Asura",
+        "building_name": "Lanaya Tower",
+        "uni_logo": "assets/img/kbgbp/Institut Teknologi Sepuluh November.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 5,
+        "uni_name": "Politeknik Negeri Pontianak",
+        "team_name": "Firestorm",
+        "building_name": "Tariu Residence",
+        "uni_logo": "assets/img/kbgbp/Politeknik Negeri Pontianak.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 6,
+        "uni_name": "Politeknik Negeri Jakarta",
+        "team_name": "Aeterna",
+        "building_name": "Algaery Hive Building",
+        "uni_logo": "assets/img/kbgbp/Politeknik Negeri Jakarta.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 7,
+        "uni_name": "Politeknik Negeri Malang",
+        "team_name": "Akral Birawa",
+        "building_name": "Apartemen Sujiva Suvarna",
+        "uni_logo": "assets/img/kbgbp/Politeknik Negeri Malang.png"
+    },
+    {
+        "competition": "kbgbp",
+        "table": 8,
+        "uni_name": "Universitas Negeri Yogyakarta",
+        "team_name": "Wisanggeni Wani",
+        "building_name": "Nirmala Tower",
+        "uni_logo": "assets/img/kbgbp/Universitas Negeri Yogyakarta.png"
+    }
+]

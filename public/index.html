@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Display</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        
+        .modal-content {
+            border-radius: 0.5rem;
+        }
+        .modal-title {
+            margin-bottom: 1rem;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-body .form-label {
+            font-weight: 600; /* Makes the label bold */
+            font-size: 1rem; /* Adjust the label font size */
+        }
+
+        .modal-body input.form-control {
+            padding: 10px; /* Increases the padding inside the input fields */
+            border-radius: 5px; /* Softens the input field corners */
+            margin-bottom: 15px; /* Adds more space between fields */
+            border: 1px solid #ccc; /* Gives a subtle border */
+        }
+
+        .modal-body input.form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue focus border */
+            border-color: #007bff;
+        }
+
+        .container-row {
+            margin-bottom: 0.1rem;
+        }
+        .university-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .university-logo {
+            max-width: auto; /* Adjust this value as needed */
+            height: 80px;
+            object-fit: contain;
+            margin-right: 10px;
+        }
+        .university-info {
+            text-align: left;
+        }
+        .university-info .team-building {
+            font-weight: bold;
+        }
+        .timer-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .logo {
+            max-width: 200px; /* Adjust this value as needed */
+            height: auto;
+        }
+
+        h1.h1 {
+            font-size: 3rem; /* Adjust the font size as needed */
+        }
+
+        .big-bold-text {
+            font-size: 24px; /* Adjust size as needed */
+            font-weight: bold;
+        }
+        .timer-stop{
+            color: rgb(0, 0, 0);
+        }
+        .additional-timer-stop{
+            color: rgb(255, 0, 0);
+        }
+        .timer-start{
+            color: teal;
+        }
+    </style>
+</head>
+<body class="bg-light text-center">
+
+    <div class="container-fluid" style="background-color: #f8f9fa;">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <img src="assets/img/logo-kbgi.webp" alt="Left Logo" class="logo">
+            </div>
+            <div class="col text-center">
+                <h1 class="h1">Kompetisi Bangunan Gedung Indonesia</h1>
+            </div>
+            <div class="col-auto">
+                <img src="assets/img/logo-unwar.webp" alt="Right Logo" class="logo">
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <button id="startButton" class="btn btn-secondary btn-lg mb-2" onclick="start()">Start</button>
+                <button class="btn btn-danger btn-lg mb-2" onclick="reset()">Reset</button>
+                <select id="frequencySelect" class="form-select form-select-lg d-inline-block w-auto" onchange="setFrequency = parseFloat(this.value)">
+                    <option value="1.5">1.5 Hz</option>
+                    <option value="2.5">2.5 Hz</option>
+                    <option value="3.5">3.5 Hz</option>
+                    <option value="4.5">4.5 Hz</option>
+                    <option value="5.5">5.5 Hz</option>
+                </select>
+            </div>
+            <div class="col text-center">
+                <h2 class="h1 timer-start" style="font-size: 60px;" id="timer">00:00:00</h2>
+            </div>
+            <div class="col-auto">
+                <select id="category" class="form-select form-select-lg d-inline-block w-auto" onchange="updateContestants()">
+                    <option value="kbgb">Gedung Beton</option>
+                    <option value="kbgbp">Gedung Beton Pracetak</option>
+                </select>
+                <button class="btn btn-primary btn-lg mb-2 me-3" onclick="connectSerial()">Connect</button>
+                <h2 class="h4">Frequency: <span id="frequency">0.00 Hz</span></h2>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" style="max-width: 85%;">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-12 text-center">
+                <div class="row row-cols-2">
+                    <!-- Card 1 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card1">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 1">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title1" class="card-title fw-bold text-start">Tim 1</h5>
+                                        <p class="card-text text-start"><span id="team1">Team Name 1</span> - <span id="building1">Building Name 1</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(1)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer1" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card2">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 2">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title2" class="card-title fw-bold text-start">Tim 2</h5>
+                                        <p class="card-text text-start"><span id="team2">Team Name 2</span> - <span id="building2">Building Name 2</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(2)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer2" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card3">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 3">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title3" class="card-title fw-bold text-start">Tim 3</h5>
+                                        <p class="card-text text-start"><span id="team3">Team Name 3</span> - <span id="building3">Building Name 3</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(3)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer3" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card4">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 4">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title4" class="card-title fw-bold text-start">Tim 4</h5>
+                                        <p class="card-text text-start"><span id="team4">Team Name 4</span> - <span id="building4">Building Name 4</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(4)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer4" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card5">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 5">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title5" class="card-title fw-bold text-start">Tim 5</h5>
+                                        <p class="card-text text-start"><span id="team5">Team Name 5</span> - <span id="building5">Building Name 5</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(5)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer5" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card6">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 6">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title6" class="card-title fw-bold text-start">Tim 6</h5>
+                                        <p class="card-text text-start"><span id="team6">Team Name 6</span> - <span id="building6">Building Name 6</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(6)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer6" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 7 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card7">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 7">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title7" class="card-title fw-bold text-start">Tim 7</h5>
+                                        <p class="card-text text-start"><span id="team7">Team Name 7</span> - <span id="building7">Building Name 7</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(7)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer7" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 8 -->
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 100%;" id="card8">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <img src="assets/img/logo-uni/logo-warmadewa.png" class="university-logo" alt="University Logo 8">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 id="title8" class="card-title fw-bold text-start">Tim 8</h5>
+                                        <p class="card-text text-start"><span id="team8">Team Name 8</span> - <span id="building8">Building Name 8</span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- <button class="btn btn-outline-primary btn-sm" onclick="showModal(8)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button> -->
+                                            <div id="timer8" class="card-text text-muted big-bold-text additional-timer-stop">00:00:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <!-- Modal Structure -->
+    <div id="titleModal" class="modal fade" tabindex="-1" aria-labelledby="titleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleModalLabel">Set Team Info</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 text-start">
+                        <label for="timerTitleInput" class="form-label">Nama Universitas</label>
+                        <input type="text" id="timerTitleInput" class="form-control" placeholder="Enter university name here">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="timerTeamInput" class="form-label">Nama Tim</label>
+                        <input type="text" id="timerTeamInput" class="form-control" placeholder="Enter team name here">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="timerBuildingInput" class="form-label">Nama Bangunan</label>
+                        <input type="text" id="timerBuildingInput" class="form-control" placeholder="Enter building name here">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="timerImageInput" class="form-label">University Logo</label>
+                        <input type="file" id="timerImageInput" class="form-control" accept="image/*" onchange="previewImage(event)">
+                        <img id="imagePreview" src="" alt="Image Preview" class="img-fluid mt-2" style="display: none;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTitle()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let startReading = false;
+        let isMainTimerRunning = false;
+        let mainTimer = null;
+        let mainTimerMinutes = 0;
+        let mainTimerSeconds = 0;
+        let mainTimerMilliseconds = 0;
+        let setFrequency = 1.5;
+        let currentTimerId = null;
+        const additionalTimers = {};
+
+        // Load JSON data
+        async function loadContestantData() {
+            const response = await fetch('assets/db/contestant.json');
+            return await response.json();
+        }
+
+        // Function to update the university logo, title, team, and building based on category
+        async function updateContestants() {
+            const selectedCategory = document.getElementById('category').value;
+            const contestantData = await loadContestantData();
+            
+            // Filter the data based on the selected category
+            const filteredData = contestantData.filter(data => data.competition === selectedCategory);
+
+            // Update the HTML elements for each card (Assuming you have 3 cards)
+            filteredData.forEach((data, index) => {
+                if (index < 8) { // Update only if you have fewer than 3 data entries
+                    document.getElementById(`title${index + 1}`).innerText = `Meja ${index + 1} - ${data.uni_name}`;
+                    document.getElementById(`team${index + 1}`).innerText = data.team_name;
+                    document.getElementById(`building${index + 1}`).innerText = data.building_name;
+                    document.querySelector(`#card${index + 1} .university-logo`).src = data.uni_logo;
+                }
+            });
+        }
+
+        // Initial loading
+        window.onload = function () {
+            updateContestants();
+        };
+    
+        function showModal(timerId) {
+            console.log('Show modal for timerId:', timerId);  // Debugging line
+            currentTimerId = timerId;
+            const myModal = new bootstrap.Modal(document.getElementById('titleModal'));
+            myModal.show();
+        }
+    
+        function closeModal() {
+            console.log('Close modal');  // Debugging line
+            const myModal = bootstrap.Modal.getInstance(document.getElementById('titleModal'));
+            if (myModal) myModal.hide();
+        }
+    
+        // Preview image before uploading
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const image = document.getElementById('imagePreview');
+                image.src = reader.result;
+                image.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    
+        function saveTitle() {
+            if (currentTimerId !== null) {
+                // Get values from inputs
+                const title = document.getElementById('timerTitleInput').value;
+                const team = document.getElementById('timerTeamInput').value;
+                const building = document.getElementById('timerBuildingInput').value;
+                const image = document.getElementById('imagePreview').src;
+    
+                // Get elements to update
+                const titleElement = document.getElementById(`title${currentTimerId}`);
+                const teamElement = document.getElementById(`team${currentTimerId}`);
+                const buildingElement = document.getElementById(`building${currentTimerId}`);
+                const cardImage = document.querySelector(`#card${currentTimerId} img`);
+    
+                // Update title, team, and building text
+                if (titleElement) {
+                    titleElement.innerText = title;
+                }
+                if (teamElement) {
+                    teamElement.innerText = team;
+                }
+                if (buildingElement) {
+                    buildingElement.innerText = building;
+                }
+    
+                // Update image if available
+                if (cardImage && image) {
+                    cardImage.src = image;
+                }
+            }
+            closeModal();
+        }
+
+        let pKeyPressed = false;
+
+        // Add an event listener for the keydown event
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'p') {
+                // Set the flag to true when "p" is pressed
+                pKeyPressed = true; // Use the flag to indicate "p" was pressed
+                document.getElementById('frequency').innerText = setFrequency + ' Hz'; // Show setFrequency
+                startMainTimer(); // Start the timer immediately when "p" is pressed
+            }
+        });
+    
+        function fetchData() {
+            if (!startReading) return;
+
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data fetched:', data);  // Debugging line
+                    const frequency = parseFloat(data.frequency.toFixed(2));
+
+                    // Check the frequency condition
+                    if (frequency > setFrequency || frequency >= setFrequency - 0.5) {
+                        document.getElementById('frequency').innerText = setFrequency + ' Hz'; // Set frequency to the actual value
+
+                        // Start the timer if frequency is within the range and timer is not running
+                        if (isMainTimerRunning && !mainTimer) {
+                            startMainTimer();
+                        }
+                    } else if(pKeyPressed==true){
+                        // Display the actual frequency value if it's not in the range
+                        document.getElementById('frequency').innerText = setFrequency + ' Hz';
+                    }
+                    else {
+                        // Display the actual frequency value if it's not in the range
+                        document.getElementById('frequency').innerText = frequency + ' Hz';
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    
+        function startMainTimer() {
+            console.log('Starting main timer');  // Debugging line
+            mainTimer = setInterval(() => {
+                mainTimerMilliseconds += 100;
+                if (mainTimerMilliseconds === 1000) {
+                    mainTimerSeconds++;
+                    mainTimerMilliseconds = 0;
+                }
+                if (mainTimerSeconds === 60) {
+                    mainTimerMinutes++;
+                    mainTimerSeconds = 0;
+                }
+                updateTimerDisplay('timer', mainTimerMinutes, mainTimerSeconds, mainTimerMilliseconds);
+    
+                for (let i = 1; i <= 8; i++) {
+                    if (additionalTimers[i] && additionalTimers[i].running) {
+                        additionalTimers[i].milliseconds += 100;
+                        if (additionalTimers[i].milliseconds === 1000) {
+                            additionalTimers[i].seconds++;
+                            additionalTimers[i].milliseconds = 0;
+                        }
+                        if (additionalTimers[i].seconds === 60) {
+                            additionalTimers[i].minutes++;
+                            additionalTimers[i].seconds = 0;
+                        }
+                        updateTimerDisplay(`timer${i}`, additionalTimers[i].minutes, additionalTimers[i].seconds, additionalTimers[i].milliseconds);
+                    }
+                }
+            }, 100);
+        }
+    
+        function stopMainTimer() {
+            console.log('Stopping main timer');  // Debugging line
+            clearInterval(mainTimer);
+            mainTimer = null;
+            isMainTimerRunning = false;
+    
+            const [mainMinutes, mainSeconds, mainMilliseconds] = getTimerValue('timer');
+    
+            for (let i = 1; i <= 8; i++) {
+                const additionalTimerElement = document.getElementById(`timer${i}`);
+                const [additionalMinutes, additionalSeconds, additionalMilliseconds] = getTimerValue(`timer${i}`);
+    
+                if (additionalMinutes === 0 && additionalSeconds === 0 && additionalMilliseconds === 0) {
+                    updateTimerDisplay(`timer${i}`, mainMinutes, mainSeconds, mainMilliseconds);
+                }
+            }
+        }
+    
+        function reset() {
+            console.log('Resetting timers');  // Debugging line
+            stopMainTimer();
+            mainTimerMinutes = 0;
+            mainTimerSeconds = 0;
+            mainTimerMilliseconds = 0;
+            updateTimerDisplay('timer', mainTimerMinutes, mainTimerSeconds, mainTimerMilliseconds);
+            document.getElementById('frequency').innerText = '0.00 Hz';
+            startReading = false;
+    
+            for (let i = 1; i <= 8; i++) {
+                updateTimerDisplay(`timer${i}`, 0, 0, 0);
+                if (additionalTimers[i]) {
+                    additionalTimers[i].minutes = 0;
+                    additionalTimers[i].seconds = 0;
+                    additionalTimers[i].milliseconds = 0;
+                    additionalTimers[i].running = false;
+                }
+            }
+    
+            document.getElementById('startButton').classList.remove('active');
+            const timerElement = document.getElementById('timer');
+            timerElement.classList.remove('timer-start');
+            timerElement.classList.add('timer-stop');
+        }
+    
+        function start() {
+            console.log('Starting timers');  // Debugging line
+            startReading = true;
+            isMainTimerRunning = true;
+    
+            const [mainMinutes, mainSeconds, mainMilliseconds] = getTimerValue('timer');
+            for (let i = 1; i <= 8; i++) {
+                additionalTimers[i] = { minutes: mainMinutes, seconds: mainSeconds, milliseconds: mainMilliseconds, running: true };
+                updateTimerDisplay(`timer${i}`, mainMinutes, mainSeconds, mainMilliseconds);
+            }
+    
+            document.getElementById('startButton').classList.add('active');
+            const timerElement = document.getElementById('timer');
+            timerElement.classList.remove('timer-stop');
+            timerElement.classList.add('timer-start');
+        }
+    
+        function updateAdditionalTimer(timerId, action) {
+            if (action === 'stop') {
+                if (additionalTimers[timerId]) {
+                    additionalTimers[timerId].running = false;
+                    updateTimerDisplay(`timer${timerId}`, additionalTimers[timerId].minutes, additionalTimers[timerId].seconds, additionalTimers[timerId].milliseconds);
+                }
+            } else if (action === 'update') {
+                if (additionalTimers[timerId]) {
+                    additionalTimers[timerId].running = true;
+                }
+            }
+        }
+    
+        function updateTimerDisplay(timerId, minutes, seconds, milliseconds) {
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const formattedSeconds = seconds.toString().padStart(2, '0');
+            const formattedMilliseconds = (milliseconds / 10).toFixed(0).padStart(2, '0');
+            document.getElementById(timerId).innerText = `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
+        }
+    
+        function getTimerValue(timerId) {
+            const timerText = document.getElementById(timerId).innerText;
+            const match = timerText.match(/(\d{2}):(\d{2}):(\d{2})/);
+            if (match) {
+                return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3]) * 10]; // Convert milliseconds back to integer
+            }
+            return [0, 0, 0];
+        }
+    
+        function handleKeyPress(event) {
+            const key = event.key;
+    
+            // Stop the main timer when 'a' is pressed
+            if (key === 'a') {
+                stopMainTimer();
+                pKeyPressed = false;
+                // Do not change startReading, so the data fetching continues
+            }
+    
+            // Stop timer10 when '0' is pressed
+            // if (key === '0') {
+            //     updateAdditionalTimer(10, 'stop');
+            // }
+    
+            // Update or stop additional timers when '1', '2', ..., '9' are pressed
+            if (key >= '1' && key <= '8') {
+                const timerId = parseInt(key, 10);
+                // Toggle between update and stop based on timer status
+                if (additionalTimers[timerId] && additionalTimers[timerId].running) {
+                    updateAdditionalTimer(timerId, 'stop');
+                } else {
+                    updateAdditionalTimer(timerId, 'update');
+                }
+            }
+        }
+
+        function connectSerial() {
+            fetch('/open-serial', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    
+        document.addEventListener('keydown', handleKeyPress);
+    
+        // Example usage of fetchData function
+        setInterval(fetchData, 1000);
+    </script>
+    
+</body>
+</html>
