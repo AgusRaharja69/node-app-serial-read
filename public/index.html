@@ -459,6 +459,7 @@
                 // Set the flag to true when "p" is pressed
                 pKeyPressed = true; // Use the flag to indicate "p" was pressed
                 document.getElementById('frequency').innerText = setFrequency + ' Hz'; // Show setFrequency
+                stopMainTimer();
                 startMainTimer(); // Start the timer immediately when "p" is pressed
             }
         });
